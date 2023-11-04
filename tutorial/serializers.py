@@ -23,6 +23,13 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
+    # def create(self, validated_data):
+    #     lessons_data = validated_data.pop('lessons')
+    #     course = Course.objects.create(**validated_data)
+    #     for lesson_data in lessons_data:
+    #         Lesson.objects.create(course=course, **lesson_data)
+    #     return course
+
 
 class PaymentSerializer(serializers.ModelSerializer):
 
