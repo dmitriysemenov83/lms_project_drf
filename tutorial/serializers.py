@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from tutorial.models import Course, Lesson, Payment
-
+from users.models import NULLABLE
 
 class LessonSerializer(serializers.ModelSerializer):
 
@@ -14,7 +14,7 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     # num_lessons = serializers.IntegerField(source='lesson_set.count', read_only=True)
     num_lessons = serializers.SerializerMethodField()
-    lessons = LessonSerializer(many=True, source='lesson_set')
+    lessons = LessonSerializer(many=True, read_only=True, source='lesson_set')
 
     def get_num_lessons(self, obj):
         return Lesson.objects.all().filter(course=obj).count()
