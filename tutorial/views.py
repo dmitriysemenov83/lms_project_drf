@@ -18,6 +18,8 @@ class CourseViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated, IsNotStaffUser]
         elif self.action in ["update", "partial_update"]:
             permission_classes = [IsAuthenticated, IsOwnerOrStaff]
+        elif self.action == "destroy":
+            permission_classes = [IsAuthenticated, IsNotStaffUser]
         else:
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
