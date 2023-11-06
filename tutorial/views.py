@@ -2,7 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.filters import OrderingFilter
-from rest_framework.permissions import IsAuthenticated, DjangoObjectPermissions
+from rest_framework.permissions import IsAuthenticated
 
 from tutorial.models import Course, Lesson, Payment
 from tutorial.permissions import IsNotStaffUser, IsOwnerOrStaff

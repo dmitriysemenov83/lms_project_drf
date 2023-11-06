@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from tutorial.models import Course, Lesson, Payment
-from users.models import NULLABLE
+
 
 class LessonSerializer(serializers.ModelSerializer):
 
