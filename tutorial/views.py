@@ -4,14 +4,16 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
-from tutorial.models import Course, Lesson, Payment
+from tutorial.models import Course, Lesson, Payment, Subscription
+from tutorial.paginators import LessonPaginator
 from tutorial.permissions import IsNotStaffUser, IsOwnerOrStaff
-from tutorial.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
+from tutorial.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = LessonPaginator
 
     def get_permissions(self):
         if self.action == "create":
@@ -51,6 +53,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    pagination_class = LessonPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -76,3 +79,20 @@ class PaymentListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ('-date',)
+
+
+class SubscribeCreateAPIView(generics.CreateAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+
+
+class SubscribeListAPIView(generics.ListAPIView):
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class SubscribeDestroyAPIView(generics.DestroyAPIView):
+    queryset = Subscription.objects.all()
