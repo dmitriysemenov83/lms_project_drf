@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'drf_yasg',
     'django_filters',
     'users',
     'tutorial',
@@ -82,8 +83,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'homework_drf',
-        'USER': 'postgres',
-        'PASSWORD': 'd2ds'
+        'USER': 'dmitriy',
+        'PASSWORD': 'd2ds',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
