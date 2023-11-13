@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, serializers
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
@@ -8,6 +8,7 @@ from tutorial.models import Course, Lesson, Payment, Subscription
 from tutorial.paginators import LessonPaginator
 from tutorial.permissions import IsNotStaffUser, IsOwnerOrStaff
 from tutorial.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
+from tutorial.services import get_session
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -71,6 +72,21 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     permission_classes = [IsNotStaffUser]
+
+
+class PaymentCreateAPIView(generics.CreateAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
+
+    def perform_create(self, serializer):
+        course = serializer.validated_data.get('course')
+        if not course:
+            raise serializers.ValidationError('Курс не указан.')
+        payment = serializer.save()
+        payment.user = self.request.user
+        if payment.payment_method == 'transfer':
+            payment.session = get_session(payment).id
+            payment.save()
 
 
 class PaymentListAPIView(generics.ListAPIView):

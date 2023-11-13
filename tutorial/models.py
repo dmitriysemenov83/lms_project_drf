@@ -39,12 +39,14 @@ class Payment(models.Model):
     date = models.DateField(verbose_name='дата оплаты')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='оплаченный курс', **NULLABLE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='оплаченный урок', **NULLABLE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='сумма оплаты')
+    # amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='сумма оплаты')
+    amount = models.IntegerField(verbose_name='сумма оплаты')
     PAYMENT_METHODS = (
         ('cash', 'Наличные'),
         ('transfer', 'Перевод на счет')
     )
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, verbose_name='способ оплаты')
+    session = models.CharField(max_length=150, verbose_name='сессия оплаты', **NULLABLE)
 
     class Meta:
         verbose_name = 'Платеж'

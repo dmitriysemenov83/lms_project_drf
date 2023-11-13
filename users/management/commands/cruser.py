@@ -15,5 +15,5 @@ class Command(BaseCommand):
             is_active=True,
         )
 
-        user.set_password('qazwsx2020g2')
+        user.set_password('qazwsx2020g1')
         user.save()
