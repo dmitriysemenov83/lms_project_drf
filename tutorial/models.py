@@ -46,7 +46,7 @@ class Payment(models.Model):
         ('transfer', 'Перевод на счет')
     )
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, verbose_name='способ оплаты')
-    session = models.CharField(max_length=150, verbose_name='сессия оплаты', **NULLABLE)
+    session = models.TextField(verbose_name='сессия оплаты', **NULLABLE)
 
     class Meta:
         verbose_name = 'Платеж'

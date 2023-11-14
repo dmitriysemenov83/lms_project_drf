@@ -2,7 +2,7 @@ import stripe
 
 from tutorial.models import Payment
 
-stripe.api_key = " "
+stripe.api_key = "sk_test_51OBeJ0LA0is9XmV8sdmFnVd8maynLpjnTWPBkrcGy0GWFLaNjrNKzIfOeQfdp3P6nYnMLlus9j25BnMQguyyTRAy00KaQRRiKB"
 
 
 def get_session(serializer: Payment):
@@ -22,8 +22,9 @@ def get_session(serializer: Payment):
             },
         ],
         mode="payment",
-        # custom_email=serializer.user.email,
     )
-    # send_payment_link_to_mail(session.url, serializer.user.email)
-    return session
+    return session.url
+
+
+
 

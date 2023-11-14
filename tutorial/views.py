@@ -84,9 +84,9 @@ class PaymentCreateAPIView(generics.CreateAPIView):
             raise serializers.ValidationError('Курс не указан.')
         payment = serializer.save()
         payment.user = self.request.user
-        if payment.payment_method == 'transfer':
-            payment.session = get_session(payment).id
-            payment.save()
+        session_url = get_session(payment)  # Получаем URL сессии
+        payment.session = session_url  # Сохраняем URL сессии
+        payment.save()
 
 
 class PaymentListAPIView(generics.ListAPIView):
@@ -95,6 +95,11 @@ class PaymentListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'payment_method')
     ordering_fields = ('-date',)
+
+
+class PaymentRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
 
 
 class SubscribeCreateAPIView(generics.CreateAPIView):
