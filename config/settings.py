@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'users',
     'tutorial',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -119,7 +120,7 @@ TIME_ZONE = 'Asia/Yekaterinburg'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -147,3 +148,13 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'yourmail@mail.com'
+EMAIL_HOST_PASSWORD = 'yorpassword'
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

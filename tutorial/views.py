@@ -10,6 +10,7 @@ from tutorial.permissions import IsNotStaffUser, IsOwnerOrStaff
 from tutorial.serializers import CourseSerializer, LessonSerializer, PaymentSerializer, SubscriptionSerializer
 from tutorial.services import get_session
 
+from tutorial.tasks import send_course_update_email
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
@@ -67,6 +68,14 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsOwnerOrStaff]
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        course = instance.course
+        subscriptions = Subscription.objects.filter(course=course, is_active=True)
+        for subscription in subscriptions:
+            user_email = subscription.user.email
+            send_course_update_email.delay(user_email, course.title)
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
