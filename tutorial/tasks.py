@@ -6,5 +6,5 @@ from django.core.mail import send_mail
 def send_course_update_email(user_mail, course_title):
     subject = 'Обновление материалов курса'
     message = f'Уважаемый пользователь, материалы курса "{course_title}" были обновлены. Посетите наш сайт, чтобы узнать подробности.'
-    from_email = 'yourmail@mail.com'
+    from_email = 'damas74@yandex.ru'
     send_mail(subject, message, from_email, [user_mail])

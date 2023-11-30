@@ -12,6 +12,7 @@ from tutorial.services import get_session
 
 from tutorial.tasks import send_course_update_email
 
+
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
